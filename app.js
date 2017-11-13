@@ -38,6 +38,8 @@ app.set('view engine', 'handlebars');
 var isStrategySetup = false;
 var passport_setup_strategy = function() {
   return function(req, res, next){
+    console.log('RES')
+    console.log(res)
     if (!isStrategySetup) {
       // use atlassian oauth
       passport.use(new AtlassianOAuthStrategy({
