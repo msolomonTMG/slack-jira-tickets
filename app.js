@@ -139,8 +139,7 @@ app.post('/', function(req, res) {
         } else {
           // slack will post OK in the channel if you just return 200
           res.setHeader('Content-Type', 'application/json');
-          res.setStatus(200)
-          res.send(JSON.stringify({ success: true }))
+          res.status(200).send()
           // this user already authed, show dialog
           slack.openCreateTicketDialog(req.body)
         }
