@@ -35,7 +35,7 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 // use atlassian oauth
 passport.use(new AtlassianOAuthStrategy({
   applicationURL:"https://nowthis.atlassian.net",
-  callbackURL:`${process.env.APP_URL}auth/atlassian-oauth/callback`,
+  callbackURL:`${APP_URL}auth/atlassian-oauth/callback`,
   passReqToCallback: true,
   consumerKey:"neptune-the-doodle",
   consumerSecret:process.env.RSA_PRIVATE_KEY
@@ -125,6 +125,10 @@ app.post('/', function(req, res) {
           slack.sendPrivateMessage(req.body.channel_id,
                                    req.body.user_id,
           `:hand: To create tickets from Slack, you must first *<${APP_URL}auth?slackUsername=${req.body.user_name}|auth with Jira>*`)
+          // send a 200 for the slash command
+          res.setHeader('Content-Type', 'application/json');
+          res.setStatus(200)
+          res.send(JSON.stringify({ success: true }))
         } else {
           // this user already authed, show dialog
           slack.openCreateTicketDialog(req.body)
