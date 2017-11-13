@@ -7,7 +7,7 @@ var oauth = new OAuth.OAuth(
   'https://api.twitter.com/oauth/request_token',
   'https://api.twitter.com/oauth/access_token',
   'neptune-the-doodle',
-  process.env.CONSUMER_SECRET,
+  process.env.RSA_PRIVATE_KEY,
   '1.0A',
   null,
   'RSA-SHA1'
