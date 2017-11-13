@@ -37,9 +37,7 @@ app.set('view engine', 'handlebars');
 
 var isStrategySetup = false;
 var passport_setup_strategy = function() {
-  return function(req, res, next){
-    console.log('RES')
-    console.log(res)
+  function(req, res, next){
     if (!isStrategySetup) {
       // use atlassian oauth
       passport.use(new AtlassianOAuthStrategy({
@@ -60,7 +58,7 @@ var passport_setup_strategy = function() {
               jiraTokenSecret: tokenSecret
             }).then(createdUser => {
               console.log('user created')
-              res.render('message', {
+              return res.render('message', {
                 successMsg: 'You can now create tickets with /ticket in Slack!'
               })
             })
@@ -111,11 +109,12 @@ app.get('/auth', function(req, res) {
 app.get('/auth/atlassian-oauth',
     passport_setup_strategy(),
     passport.authenticate('atlassian-oauth'),
-    function (req, res) {
-      console.log('ATLASSIAN AUTH')
-        // The request will be redirected to the Atlassian app for authentication, so this
-        // function will not be called.
-    })
+    redirectSuccess(req, res))
+    // function (req, res) {
+    //   console.log('ATLASSIAN AUTH')
+    //     // The request will be redirected to the Atlassian app for authentication, so this
+    //     // function will not be called.
+    // })
 
 app.get('/auth/atlassian-oauth/callback',
     passport.authenticate('atlassian-oauth', { failureRedirect:'/fail' }),
