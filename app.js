@@ -105,12 +105,11 @@ app.get('/auth', function(req, res) {
 app.get('/auth/atlassian-oauth',
     passport_setup_strategy(),
     passport.authenticate('atlassian-oauth'),
-    redirectSuccess(req, res))
-    // function (req, res) {
-    //   console.log('ATLASSIAN AUTH')
-    //     // The request will be redirected to the Atlassian app for authentication, so this
-    //     // function will not be called.
-    // })
+    function (req, res) {
+      console.log('ATLASSIAN AUTH')
+        // The request will be redirected to the Atlassian app for authentication, so this
+        // function will not be called.
+    })
 
 app.get('/auth/atlassian-oauth/callback',
     passport.authenticate('atlassian-oauth', { failureRedirect:'/fail' }),
