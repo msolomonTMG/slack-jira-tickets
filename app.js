@@ -121,22 +121,20 @@ app.post('/', function(req, res) {
     user.getBySlackUsername(req.body.user_name)
       .then(thisUser => {
         if (!thisUser) {
+          // send a 200 for the slash command
+          res.setHeader('Content-Type', 'application/json');
+          res.status(200).send({})
           // the user must auth with Jira first
           slack.sendPrivateMessage(req.body.channel_id,
                                    req.body.user_id,
           `:hand: To create tickets from Slack, you must first *<${APP_URL}auth?slackUsername=${req.body.user_name}|auth with Jira>*`)
-          // send a 200 for the slash command
-          res.setHeader('Content-Type', 'application/json');
-          res.setStatus(200)
-          res.send(JSON.stringify({ success: true }))
         } else {
           // this user already authed, show dialog
           slack.openCreateTicketDialog(req.body)
             .then(success => {
               // slack will post OK in the channel if you just return 200
               res.setHeader('Content-Type', 'application/json');
-              res.setStatus(200)
-              res.send(JSON.stringify({ success: true }))
+              res.status(200).send({})
             })
             .catch(err => {
               res.sendStatus(500)
