@@ -31,6 +31,8 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 // use atlassian oauth
 passport.use(new AtlassianOAuthStrategy({
@@ -51,7 +53,9 @@ passport.use(new AtlassianOAuthStrategy({
         jiraTokenSecret: tokenSecret
       })
       .then(createdUser => {
-        return done(JSON.stringify({user:createdUser}))
+        res.render('message', {
+          successMsg: 'You can now create tickets with <pre>/ticket</pre> in Slack!'
+        })
       })
       .catch(err => {
         return done(JSON.stringify({error: err}))
