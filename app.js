@@ -56,6 +56,12 @@ passport.use(new AtlassianOAuthStrategy({
         jiraTokenSecret: tokenSecret
       }).then(createdUser => {
         jira.makeJiraRequest(createdUser)
+          .then(data => {
+            console.log(data)
+          })
+          .catch(err => {
+            console.log(err)
+          })
         return done(null, createdUser)
       })
     })

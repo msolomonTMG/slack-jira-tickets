@@ -4,8 +4,8 @@ const
 
 
 var oauth = new OAuth.OAuth(
-  'https://api.twitter.com/oauth/request_token',
-  'https://api.twitter.com/oauth/access_token',
+  'https://nowthis.atlassian.net/plugins/servlet/oauth/request-token',
+  'https://nowthis.atlassian.net/plugins/servlet/oauth/access-token',
   'neptune-the-doodle',
   process.env.RSA_PRIVATE_KEY,
   '1.0A',
