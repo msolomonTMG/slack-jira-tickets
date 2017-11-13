@@ -35,34 +35,6 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-// use atlassian oauth
-passport.use(new AtlassianOAuthStrategy({
-  applicationURL:"https://nowthis.atlassian.net",
-  callbackURL:`${APP_URL}auth/atlassian-oauth/callback`,
-  passReqToCallback: true,
-  consumerKey:"neptune-the-doodle",
-  consumerSecret:process.env.RSA_PRIVATE_KEY
-}, function(req, token, tokenSecret, profile, done) {
-    process.nextTick(function() {
-      console.log(token)
-      console.log(tokenSecret)
-      console.log(req.session.slackUsername)
-
-      user.create({
-        slackUsername: req.session.slackUsername,
-        jiraToken: token,
-        jiraTokenSecret: tokenSecret
-      }).then(createdUser => {
-        console.log('user created')
-        res.render('message', {
-          successMsg: 'You can now create tickets with /ticket in Slack!'
-        })
-      })
-
-    })
-  }
-));
-
 app.get('/', function(req, res) {
   res.render('message', {
     successMsg: 'You can now create tickets with /ticket in Slack!'
@@ -87,7 +59,36 @@ app.get('/auth', function(req, res) {
     .then(thisUser => {
       if (!thisUser) {
         req.session.slackUsername = req.query.slackUsername
-        res.redirect('/auth/atlassian-oauth')
+        //res.redirect('/auth/atlassian-oauth')
+
+        // use atlassian oauth
+        passport.use(new AtlassianOAuthStrategy({
+          applicationURL:"https://nowthis.atlassian.net",
+          callbackURL:`${APP_URL}auth/atlassian-oauth/callback`,
+          //passReqToCallback: true,
+          consumerKey:"neptune-the-doodle",
+          consumerSecret:process.env.RSA_PRIVATE_KEY
+        }, function(req, token, tokenSecret, profile, done) {
+            process.nextTick(function() {
+              console.log(token)
+              console.log(tokenSecret)
+              console.log(req.session.slackUsername)
+
+              user.create({
+                slackUsername: req.session.slackUsername,
+                jiraToken: token,
+                jiraTokenSecret: tokenSecret
+              }).then(createdUser => {
+                console.log('user created')
+                res.render('message', {
+                  successMsg: 'You can now create tickets with /ticket in Slack!'
+                })
+              })
+
+            })
+          }
+        ));
+
       } else {
         // this user already signed up
         res.send(JSON.stringify({user: thisUser}))
