@@ -21,16 +21,19 @@ var functions = {
   makeJiraRequest: function(user) {
     return new Promise(function(resolve, reject) {
 
-      oauth.get('nowthis.atlassian.net/rest/api/2/issue/37440',
+      oauth.get('https://nowthis.atlassian.net/rest/api/2/issue/37440',
       user.jiraToken, //test user token
       user.jiraTokenSecret, //test user secret
       function (err, data, res){
         if (err) {
+          console.log('error with jira request')
           console.log(err);
+          return reject(err);
         } else {
+          console.log('jira data')
           console.log(data)
+          return resolve(data)
         }
-        done();
       });
 
 
