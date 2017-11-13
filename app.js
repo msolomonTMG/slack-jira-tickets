@@ -60,17 +60,13 @@ app.get('/auth', function(req, res) {
     .then(thisUser => {
       if (!thisUser) {
         req.session.slackUsername = req.query.slackUsername
-        // passport.authenticate('atlassian-oauth', function(err, user, info) {
-        //
-        // })
 
         passport.use(new AtlassianOAuthStrategy({
           applicationURL:"https://nowthis.atlassian.net",
           callbackURL:`${APP_URL}auth/atlassian-oauth/callback`,
-          passReqToCallback: true,
           consumerKey:"neptune-the-doodle",
           consumerSecret:process.env.RSA_PRIVATE_KEY
-        }, function(req, token, tokenSecret, profile, done) {
+        }, function(token, tokenSecret, profile, done) {
             process.nextTick(function() {
               console.log(token)
               console.log(tokenSecret)
@@ -81,15 +77,23 @@ app.get('/auth', function(req, res) {
                 jiraToken: token,
                 jiraTokenSecret: tokenSecret
               }).then(createdUser => {
-                console.log('user created')
-                res.render('message', {
-                  successMsg: 'You can now create tickets with /ticket in Slack!'
-                })
+                return createdUser
               })
-
             })
           }
         ));
+
+        passport.authenticate('atlassian-oauth', function(err, authedUser, info) {
+          console.log('err')
+          console.log(err)
+          console.log('authedUser')
+          console.log(authedUser)
+          console.log('info')
+          console.log(info)
+          res.render('message', {
+            successMsg: 'You can now create tickets with /ticket in Slack!'
+          })
+        })
 
       } else {
         // this user already signed up
