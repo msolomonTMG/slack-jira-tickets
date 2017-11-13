@@ -148,7 +148,8 @@ var functions = {
           {
             label: "Summary",
             name: "summary",
-            type: "text"
+            type: "text",
+            value: payload.text
           },
           {
             label: "Description",

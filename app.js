@@ -126,10 +126,6 @@ app.post('/', function(req, res) {
     user.getBySlackUsername(req.body.user_name)
       .then(thisUser => {
         if (!thisUser) {
-          // send a 200 for the slash command
-          // res.setHeader('Content-Type', 'application/json');
-          // res.setStatus(200)
-          // res.send(JSON.stringify({ success: true }))
           // the user must auth with Jira first
           slack.sendPrivateMessage(req.body.channel_id,
                                    req.body.user_id,
