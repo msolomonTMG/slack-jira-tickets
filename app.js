@@ -2,6 +2,7 @@
 
 const
   express = require('express'),
+  exphbs = require('express-handlebars'),
   bodyParser = require('body-parser'),
   slack = require('./slack'),
   passport = require('passport'),
