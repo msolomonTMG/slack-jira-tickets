@@ -68,8 +68,6 @@ var passport_setup_strategy = function(req, res, next){
 
       isStrategySetup = true
     }
-
-  next()
 }
 
 app.get('/', function(req, res) {
