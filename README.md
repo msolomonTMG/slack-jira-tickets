@@ -1,1 +1,1 @@
-Send updates from Jira to our SEO team's slack channel
+create jira tickets from our slack instance
