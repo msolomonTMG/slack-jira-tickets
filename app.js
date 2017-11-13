@@ -69,7 +69,7 @@ passport.use(new AtlassianOAuthStrategy({
 
 app.get('/', function(req, res) {
   res.render('message', {
-    successMsg: 'You can now create tickets with <pre>/ticket</pre> in Slack!'
+    successMsg: 'You can now create tickets with /ticket in Slack!'
   })
 })
 
