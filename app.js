@@ -36,8 +36,7 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 var isStrategySetup = false;
-var passport_setup_strategy = function() {
-  function(req, res, next){
+var passport_setup_strategy = function(req, res, next){
     if (!isStrategySetup) {
       // use atlassian oauth
       passport.use(new AtlassianOAuthStrategy({
@@ -70,8 +69,7 @@ var passport_setup_strategy = function() {
       isStrategySetup = true
     }
 
-    next()
-  }
+  next()
 }
 
 app.get('/', function(req, res) {
