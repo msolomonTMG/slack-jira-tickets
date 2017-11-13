@@ -1,7 +1,17 @@
 const
   request = require('request'),
-  OAuth   = require('oauth-1.0a'),
-  crypto  = require('crypto');
+  OAuth   = require('oauth');
+
+
+var oauth = new OAuth.OAuth(
+  'https://api.twitter.com/oauth/request_token',
+  'https://api.twitter.com/oauth/access_token',
+  'neptune-the-doodle',
+  process.env.CONSUMER_SECRET,
+  '1.0A',
+  null,
+  'RSA-SHA1'
+);
 
 var helpers = {
 
@@ -11,26 +21,18 @@ var functions = {
   makeJiraRequest: function(user) {
     return new Promise(function(resolve, reject) {
 
-      let request_data = {
-        url: 'nowthis.atlassian.net/rest/api/2/issue/37440',
-        method: 'GET'
-      };
-
-      request({
-        url: request_data.url,
-        method: request_data.method,
-        headers: oauth.toHeader(oauth.authorize(request_data, user.jiraToken))
-      }, function(error, response, body) {
-          if (error) {
-            console.log('error')
-            console.log(error)
-            return reject(error)
-          } else {
-            console.log('body')
-            console.log(body)
-            return resolve(body)
-          }
+      oauth.get('nowthis.atlassian.net/rest/api/2/issue/37440',
+      user.jiraToken, //test user token
+      user.jiraTokenSecret, //test user secret
+      function (err, data, res){
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(data)
+        }
+        done();
       });
+
 
     });
   }
