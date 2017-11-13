@@ -39,9 +39,10 @@ app.set('view engine', 'handlebars');
 passport.use(new AtlassianOAuthStrategy({
   applicationURL:"https://nowthis.atlassian.net",
   callbackURL:`${APP_URL}auth/atlassian-oauth/callback`,
+  passReqToCallback: true,
   consumerKey:"neptune-the-doodle",
   consumerSecret:process.env.RSA_PRIVATE_KEY
-}, function(token, tokenSecret, profile, done) {
+}, function(req, token, tokenSecret, profile, done) {
     console.log('HELLO')
     process.nextTick(function() {
       console.log(token)
