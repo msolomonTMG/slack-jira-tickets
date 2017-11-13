@@ -54,12 +54,14 @@ passport.use(new AtlassianOAuthStrategy({
         jiraTokenSecret: tokenSecret
       })
       .then(createdUser => {
+        console.log('user created')
         res.redirect('/')
         // res.render('message', {
         //   successMsg: 'You can now create tickets with <pre>/ticket</pre> in Slack!'
         // })
       })
       .catch(err => {
+        console.log('error creating user')
         return done(JSON.stringify({error: err}))
       })
 

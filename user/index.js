@@ -38,6 +38,7 @@ var functions = {
         console.log(newUser)
         newUser.save(function (err, user) {
           if (err) {
+            console.log(err)
             return reject(err)
           } else {
             return resolve(user)
