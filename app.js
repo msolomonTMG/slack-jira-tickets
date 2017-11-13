@@ -35,6 +35,29 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
+// passport setup for atlassian
+passport.use(new AtlassianOAuthStrategy({
+  applicationURL:"https://nowthis.atlassian.net",
+  callbackURL:`${APP_URL}auth/atlassian-oauth/callback`,
+  consumerKey:"neptune-the-doodle",
+  consumerSecret:process.env.RSA_PRIVATE_KEY
+}, function(token, tokenSecret, profile, done) {
+    console.log('HELLO')
+    process.nextTick(function() {
+      console.log(token)
+      console.log(tokenSecret)
+      console.log(req.session.slackUsername)
+
+      user.create({
+        slackUsername: req.session.slackUsername,
+        jiraToken: token,
+        jiraTokenSecret: tokenSecret
+      }).then(createdUser => {
+        return done(null, createdUser)
+      })
+    })
+  }
+));
 
 app.get('/', function(req, res) {
   res.render('message', {
@@ -60,40 +83,7 @@ app.get('/auth', function(req, res) {
     .then(thisUser => {
       if (!thisUser) {
         req.session.slackUsername = req.query.slackUsername
-
-        passport.use(new AtlassianOAuthStrategy({
-          applicationURL:"https://nowthis.atlassian.net",
-          callbackURL:`${APP_URL}auth/atlassian-oauth/callback`,
-          consumerKey:"neptune-the-doodle",
-          consumerSecret:process.env.RSA_PRIVATE_KEY
-        }, function(token, tokenSecret, profile, done) {
-            process.nextTick(function() {
-              console.log(token)
-              console.log(tokenSecret)
-              console.log(req.session.slackUsername)
-
-              user.create({
-                slackUsername: req.session.slackUsername,
-                jiraToken: token,
-                jiraTokenSecret: tokenSecret
-              }).then(createdUser => {
-                return createdUser
-              })
-            })
-          }
-        ));
-
-        passport.authenticate('atlassian-oauth', function(err, authedUser, info) {
-          console.log('err')
-          console.log(err)
-          console.log('authedUser')
-          console.log(authedUser)
-          console.log('info')
-          console.log(info)
-          res.render('message', {
-            successMsg: 'You can now create tickets with /ticket in Slack!'
-          })
-        })
+        res.redirect('/auth/atlassian-oauth')
 
       } else {
         // this user already signed up
@@ -106,6 +96,9 @@ app.get('/auth/atlassian-oauth',
     passport.authenticate('atlassian-oauth'),
     function (req, res) {
       console.log('ATLASSIAN AUTH')
+      res.render('message', {
+        successMsg: 'yay!'
+      })
         // The request will be redirected to the Atlassian app for authentication, so this
         // function will not be called.
     })
