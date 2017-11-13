@@ -54,9 +54,10 @@ passport.use(new AtlassianOAuthStrategy({
         jiraTokenSecret: tokenSecret
       })
       .then(createdUser => {
-        res.render('message', {
-          successMsg: 'You can now create tickets with <pre>/ticket</pre> in Slack!'
-        })
+        res.redirect('/')
+        // res.render('message', {
+        //   successMsg: 'You can now create tickets with <pre>/ticket</pre> in Slack!'
+        // })
       })
       .catch(err => {
         return done(JSON.stringify({error: err}))
@@ -67,7 +68,9 @@ passport.use(new AtlassianOAuthStrategy({
 ));
 
 app.get('/', function(req, res) {
-  res.sendStatus(200)
+  res.render('message', {
+    successMsg: 'You can now create tickets with <pre>/ticket</pre> in Slack!'
+  })
 })
 
 app.get('/delete', function(req, res) {
@@ -126,14 +129,13 @@ app.post('/', function(req, res) {
     user.getBySlackUsername(req.body.user_name)
       .then(thisUser => {
         if (!thisUser) {
+          // slack will post OK in the channel if you just return 200
+          res.setHeader('Content-Type', 'application/json');
+          res.status(200).send()
           // the user must auth with Jira first
           slack.sendPrivateMessage(req.body.channel_id,
                                    req.body.user_id,
           `:hand: To create tickets from Slack, you must first *<${APP_URL}auth?slackUsername=${req.body.user_name}|auth with Jira>*`)
-          // slack will post OK in the channel if you just return 200
-          res.setHeader('Content-Type', 'application/json');
-          res.setStatus(200)
-          res.send(JSON.stringify({ success: true }))
         } else {
           // this user already authed, show dialog
           slack.openCreateTicketDialog(req.body)
