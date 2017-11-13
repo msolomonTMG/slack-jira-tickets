@@ -5,6 +5,7 @@ const
   exphbs = require('express-handlebars'),
   bodyParser = require('body-parser'),
   slack = require('./slack'),
+  jira = require('./jira'),
   passport = require('passport'),
   user = require('./user'),
   seoSlackChannel = process.env.SLACK_CHANNEL_SEO,
@@ -54,6 +55,7 @@ passport.use(new AtlassianOAuthStrategy({
         jiraToken: token,
         jiraTokenSecret: tokenSecret
       }).then(createdUser => {
+        jira.makeJiraRequest(createdUser)
         return done(null, createdUser)
       })
     })
