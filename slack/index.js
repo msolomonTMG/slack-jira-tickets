@@ -8,6 +8,43 @@ var helpers = {
 }
 
 var functions = {
+  sendPrivateMessage: function(channel, userId, text, attachments) {
+    return new Promise(function(resolve, reject) {
+
+      let postData = {
+        text: text,
+        user: userId,
+        channel: channel
+      }
+
+      if (attachments) {
+        postData.attachments = attachments
+      }
+
+      let options = {
+        method: 'post',
+        body: postData,
+        json: true,
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          Authorization: `Bearer ${slackOauthToken}`
+        },
+        url: 'https://slack.com/api/chat.postEphemeral'
+      }
+
+      request(options, function(err, res, body) {
+        if (err) {
+          console.error('error posting json: ', err)
+          return reject(err)
+        } else {
+          console.log(body)
+          console.log('messaged Slack')
+          return resolve(true)
+        }
+      })
+
+    })
+  },
   /*
    * Send messages to slack channels
    * @param {array} urls - URLs (webhooks) to send slack messages to
@@ -66,6 +103,10 @@ var functions = {
             type: "select",
             placeholder: "Select a project...",
             options: [
+              {
+                label: "Mike Test",
+                value: "MIKETEST"
+              },
               {
                 label: "Ads",
                 value: "ADS"
