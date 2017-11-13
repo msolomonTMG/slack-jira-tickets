@@ -128,8 +128,7 @@ app.post('/', function(req, res) {
         if (!thisUser) {
           // send a 200 for the slash command
           res.setHeader('Content-Type', 'application/json');
-          res.sendStatus(200)
-          res.status(200).send()//(JSON.stringify({ success: true }))
+          res.send(JSON.stringify({ success: true }))
           // the user must auth with Jira first
           slack.sendPrivateMessage(req.body.channel_id,
                                    req.body.user_id,
@@ -140,9 +139,7 @@ app.post('/', function(req, res) {
             .then(success => {
               // slack will post OK in the channel if you just return 200
               res.setHeader('Content-Type', 'application/json');
-              //res.sendStatus(200)
-              res.status(200).send()
-              //res.send(JSON.stringify({ success: true }))
+              res.send(JSON.stringify({ success: true }))
             })
             .catch(err => {
               res.sendStatus(500)
