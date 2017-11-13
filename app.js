@@ -60,6 +60,14 @@ passport.use(new AtlassianOAuthStrategy({
   }
 ));
 
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
 app.get('/', function(req, res) {
   res.render('message', {
     successMsg: 'You can now create tickets with /ticket in Slack!'
