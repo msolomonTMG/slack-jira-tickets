@@ -38,6 +38,10 @@ var helpers = {
 
 }
 
+var showData = function(data) {
+  console.log(data)
+}
+
 var functions = {
   makeJiraRequest: function(user) {
     return new Promise(function(resolve, reject) {
@@ -47,11 +51,7 @@ var functions = {
       						user.jiraToken,
       						user.jiraTokenSecret,
       						"application/json",
-      						function(error, data, resp){
-      							console.log(data);
-              			data = JSON.parse(data);
-              			//response.send("I am looking at: "+data["key"]);
-      						});
+                  showData)
 
       // oa.get({
       //   url: 'https://nowthis.atlassian.net/rest/api/2/issue/37440',
