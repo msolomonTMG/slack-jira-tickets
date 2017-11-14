@@ -4,7 +4,7 @@ const
   JIRA_URL = process.env.JIRA_URL || 'https://nowthis.atlassian.net/',
   OAuth = require('oauth').OAuth;
 
-//TODO: use jira_url here 
+//TODO: use jira_url here
 var consumer =
   new OAuth("https://nowthis.atlassian.net/plugins/servlet/oauth/request-token",
                   "https://nowthis.atlassian.net/plugins/servlet/oauth/access-token",
@@ -51,7 +51,7 @@ var functions = {
           summary: payload.summary,
           description: payload.description,
           issuetype: {
-            name: payload.issuetype
+            name: 'task'
           }
         }
       })

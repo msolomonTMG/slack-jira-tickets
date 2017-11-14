@@ -169,30 +169,36 @@ app.post('/', function(req, res) {
       //stupid slack needs an empty body
       res.status(200).send({})
       console.log(payload)
+      user.getBySlackUsername(payload.user.name).then(thisUser => {
 
-      // jira.createTicket(user, payload)
-      //   .then(result => {
-      //     let issue = result.body.issue,
-      //         jiraURL = issue.self.split('/rest/api')[0];
-      //
-      //     slack.sendMessage(payload.channel.id,
-      //       ':raised_hands: ticket created!',
-      //       [{
-      //         fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
-      //         color: 'good',
-      //         title: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
-      //         thumb_url: `${issue.fields.creator.avatarUrls["48x48"]}`,
-      //         fields: [{
-      //           title: "Description",
-      //           value: `${issue.fields.description}`,
-      //           short: false
-      //         }]
-      //       }]
-      //     )
-      //
-      //   .catch(err => {
-      //     console.log(err)
-      //   })
+        jira.createTicket(thisUser, payload.submission)
+          .then(result => {
+            let issue = result.body.issue,
+                jiraURL = issue.self.split('/rest/api')[0];
+
+            slack.sendMessage(payload.channel.id,
+              ':raised_hands: ticket created!',
+              [{
+                fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                color: 'good',
+                title: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                thumb_url: `${issue.fields.creator.avatarUrls["48x48"]}`,
+                fields: [{
+                  title: "Description",
+                  value: `${issue.fields.description}`,
+                  short: false
+                }]
+              }]
+            )
+
+          .catch(err => {
+            console.log(err)
+          })
+
+      }).catch(err => {
+        console.log('error getting user')
+        console.log(err)
+      })
 
 
     } else {
