@@ -27,6 +27,7 @@
     "http-errors": "^1.6.1",
     "inherits": "^2.0.3",
     "ipaddr.js": "^1.3.0",
+    "mashape-oauth": "^0.1.71",
     "media-typer": "^0.3.0",
     "merge-descriptors": "^1.0.1",
     "methods": "^1.1.2",
