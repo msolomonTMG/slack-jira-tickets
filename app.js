@@ -175,10 +175,9 @@ app.post('/', function(req, res) {
           .then(result => {
 
             jira.getTicketInfo(thisUser, result.self)
-              .then(data => {
+              .then(issue => {
 
-                let issue = data.body.issue,
-                    jiraURL = issue.self.split('/rest/api')[0];
+                let jiraURL = issue.self.split('/rest/api')[0];
 
                 slack.sendMessage(payload.channel.id,
                   ':raised_hands: ticket created!',
