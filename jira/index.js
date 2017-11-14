@@ -7,14 +7,12 @@ var consumer =
   new OAuth("https://nowthis.atlassian.net/plugins/servlet/oauth/request-token",
                   "https://nowthis.atlassian.net/plugins/servlet/oauth/access-token",
                   'neptune-the-doodle',
-                  "",
+                  process.env.RSA_PRIVATE_KEY,
                   "1.0",
                   `${APP_URL}auth/atlassian-oauth/callback`,
                   "RSA-SHA1",
-				          null,
-				          process.env.RSA_PRIVATE_KEY);
+				          null);
 
-console.log(process.env.RSA_PRIVATE_KEY)
 console.log(consumer)
 // var oa = new OAuth({
 //   requestUrl: 'https://nowthis.atlassian.net/plugins/servlet/oauth/request-token',
