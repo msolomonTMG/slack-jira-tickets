@@ -50,8 +50,7 @@ var functions = {
       consumer.get("https://nowthis.atlassian.net/rest/api/2/issue/37440",
       						user.jiraToken,
       						user.jiraTokenSecret,
-      						"application/json",
-                  showData)
+      						"application/json")
 
       // oa.get({
       //   url: 'https://nowthis.atlassian.net/rest/api/2/issue/37440',
