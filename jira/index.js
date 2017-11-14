@@ -38,7 +38,7 @@ var helpers = {
 
 }
 
-var showData = function(data) {
+function showData(data) {
   console.log(data)
 }
 
@@ -50,7 +50,8 @@ var functions = {
       consumer.get("https://nowthis.atlassian.net/rest/api/2/issue/37440",
       						user.jiraToken,
       						user.jiraTokenSecret,
-      						"application/json")
+      						"application/json",
+                  showData)
 
       // oa.get({
       //   url: 'https://nowthis.atlassian.net/rest/api/2/issue/37440',
