@@ -14,6 +14,8 @@ var consumer =
 				          null,
 				          process.env.RSA_PRIVATE_KEY);
 
+console.log(process.env.RSA_PRIVATE_KEY)
+console.log(consumer)
 // var oa = new OAuth({
 //   requestUrl: 'https://nowthis.atlassian.net/plugins/servlet/oauth/request-token',
 //   accessUrl: 'https://nowthis.atlassian.net/plugins/servlet/oauth/access-token',
