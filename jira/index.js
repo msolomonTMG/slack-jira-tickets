@@ -13,27 +13,6 @@ var consumer =
                   "RSA-SHA1",
 				          null);
 
-console.log(consumer)
-// var oa = new OAuth({
-//   requestUrl: 'https://nowthis.atlassian.net/plugins/servlet/oauth/request-token',
-//   accessUrl: 'https://nowthis.atlassian.net/plugins/servlet/oauth/access-token',
-//   callback: `${APP_URL}auth/atlassian-oauth/callback`,
-//   consumerKey: 'neptune-the-doodle',
-//   consumerSecret: process.env.RSA_PRIVATE_KEY,
-//   signatureMethod: 'RSA-SHA1'
-// });
-
-
-// var oauth = new OAuth.OAuth(
-//   'https://nowthis.atlassian.net/plugins/servlet/oauth/request-token',
-//   'https://nowthis.atlassian.net/plugins/servlet/oauth/access-token',
-//   'neptune-the-doodle',
-//   process.env.RSA_PRIVATE_KEY,
-//   '1.0A',
-//   null,
-//   'RSA-SHA1'
-// );
-
 var helpers = {
 
 }
@@ -49,40 +28,13 @@ var functions = {
         'https://nowthis.atlassian.net/rest/api/2/issue/37440',
         null,
         null,
-        'application/json',        
+        'application/json',
         function(error, data, resp) {
           console.log(error)
           console.log(data)
           console.log(resp)
           return resolve(data)
         })
-
-      // oa.get({
-      //   url: 'https://nowthis.atlassian.net/rest/api/2/issue/37440',
-      //   oauth_token: user.jiraToken,
-      //   oauth_token_secret: user.tokenSecret,
-      // }, function(data) {
-      //   console.log('GOT DATA')
-      //   console.log(data)
-      //   return resolve(data)
-      // });
-
-      // oauth.get('https://nowthis.atlassian.net/rest/api/2/issue/37440',
-      // user.jiraToken, //test user token
-      // user.jiraTokenSecret, //test user secret
-      // function (err, data, res){
-      //   if (err) {
-      //     console.log('error with jira request')
-      //     console.log(err);
-      //     return reject(err);
-      //   } else {
-      //     console.log('jira data')
-      //     console.log(data)
-      //     return resolve(data)
-      //   }
-      // });
-
-
     });
   }
 }
