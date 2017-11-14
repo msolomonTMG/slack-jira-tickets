@@ -38,12 +38,6 @@ var helpers = {
 
 }
 
-function showData(status, data, resp) {
-  console.log(status)
-  console.log(data)
-  console.log(resp)
-}
-
 var functions = {
   makeJiraRequest: function(user) {
     return new Promise(function(resolve, reject) {
@@ -53,7 +47,10 @@ var functions = {
       						user.jiraToken,
       						user.jiraTokenSecret,
       						"application/json",
-                  showData)
+                  function(error, data, resp) {
+                    console.log(data)
+                    return data
+                  })
 
       // oa.get({
       //   url: 'https://nowthis.atlassian.net/rest/api/2/issue/37440',
