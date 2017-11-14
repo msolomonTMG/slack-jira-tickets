@@ -1,8 +1,10 @@
 const
   request = require('request'),
   APP_URL = process.env.APP_URL || 'http://localhost:5000/',
+  JIRA_URL = process.env.JIRA_URL || 'https://nowthis.atlassian.net/',
   OAuth = require('oauth').OAuth;
 
+//TODO: use jira_url here 
 var consumer =
   new OAuth("https://nowthis.atlassian.net/plugins/servlet/oauth/request-token",
                   "https://nowthis.atlassian.net/plugins/servlet/oauth/access-token",
@@ -15,19 +17,16 @@ var consumer =
 
 var helpers = {
 
-}
-
-var functions = {
-  makeJiraRequest: function(user) {
+  makeJiraRequest: function(user, url, method, payload) {
     return new Promise(function(resolve, reject) {
       console.log('user creds')
       console.log(user)
       consumer._performSecureRequest(user.jiraToken,
         user.jiraTokenSecret,
-        'GET',
-        'https://nowthis.atlassian.net/rest/api/2/issue/37440',
+        method.toUpperCase(),
+        url,
         null,
-        null,
+        payload,
         'application/json',
         function(error, data, resp) {
           console.log(error)
@@ -36,6 +35,36 @@ var functions = {
           return resolve(data)
         })
     });
+  }
+
+}
+
+var functions = {
+  createTicket: function(user, payload) {
+    return new Promise(function(resolve, reject) {
+      //TODO: understand the slack payload
+      let ticketData = JSON.stringify({
+        fields: {
+          project: {
+            key: payload.project
+          },
+          summary: payload.summary,
+          description: payload.description,
+          issuetype: {
+            name: payload.issuetype
+          }
+        }
+      })
+
+      helpers.makeJiraRequest(user, `${JIRA_URL}rest/api/2/issue/`, 'post', ticketData)
+        .then(ticket => {
+          return resolve(JSON.parse(ticket))
+        })
+        .catch(err => {
+          return reject(err)
+        })
+
+    })
   }
 }
 
