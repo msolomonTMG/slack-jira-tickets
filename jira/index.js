@@ -43,6 +43,21 @@ var helpers = {
 }
 
 var functions = {
+  getTicketInfo: function(user, url) {
+    return new Promise(function(resolve, reject) {
+
+      helpers.makeJiraRequest(user, url, 'get')
+        .then(ticket => {
+          console.log('TICKET')
+          console.log(ticket)
+          return resolve(JSON.parse(ticket))
+        })
+        .catch(err => {
+          return reject(err)
+        })
+
+    });
+  },
   createTicket: function(user, payload) {
     return new Promise(function(resolve, reject) {
       //TODO: understand the slack payload
