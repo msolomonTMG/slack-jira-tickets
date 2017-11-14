@@ -43,15 +43,19 @@ var functions = {
     return new Promise(function(resolve, reject) {
       console.log('user creds')
       console.log(user)
-      consumer.get('https://nowthis.atlassian.net/rest/api/2/issue/37440',
-                  user.jiraToken,
-                  user.jiraTokenSecret,
-                  function(error, data, resp) {
-                    console.log(error)
-                    console.log(data)
-                    console.log(resp)
-                    return resolve(data)
-                  })
+      consumer._performSecureRequest(user.jiraToken,
+        user.jiraTokenSecret,
+        'GET',
+        'https://nowthis.atlassian.net/rest/api/2/issue/37440',
+        null,
+        null,
+        'application/json',        
+        function(error, data, resp) {
+          console.log(error)
+          console.log(data)
+          console.log(resp)
+          return resolve(data)
+        })
 
       // oa.get({
       //   url: 'https://nowthis.atlassian.net/rest/api/2/issue/37440',
