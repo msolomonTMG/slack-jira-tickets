@@ -54,7 +54,7 @@ var functions = {
           summary: payload.summary,
           description: payload.description,
           issuetype: {
-            name: 'task'
+            name: "Task"
           }
         }
       })
