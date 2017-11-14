@@ -38,8 +38,10 @@ var helpers = {
 
 }
 
-function showData(data) {
+function showData(status, data, resp) {
+  console.log(status)
   console.log(data)
+  console.log(resp)
 }
 
 var functions = {
