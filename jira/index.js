@@ -47,8 +47,10 @@ var functions = {
                   user.jiraToken,
                   user.jiraTokenSecret,
                   function(error, data, resp) {
+                    console.log(error)
                     console.log(data)
-                    return data
+                    console.log(resp)
+                    return resolve(data)
                   })
 
       // oa.get({
