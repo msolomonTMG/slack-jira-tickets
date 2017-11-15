@@ -37,6 +37,7 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 // passport setup for atlassian
+// called from route: /auth/atlassian-oauth
 passport.use(new AtlassianOAuthStrategy({
   applicationURL:"https://nowthis.atlassian.net",
   callbackURL:`${APP_URL}auth/atlassian-oauth/callback`,
@@ -99,7 +100,9 @@ app.get('/auth', function(req, res) {
   user.getBySlackUsername(req.query.slackUsername)
     .then(thisUser => {
       if (!thisUser) {
+        // save slack username to session to use when saving user after auth
         req.session.slackUsername = req.query.slackUsername
+        // send to auth route
         res.redirect('/auth/atlassian-oauth')
 
       } else {
@@ -109,6 +112,7 @@ app.get('/auth', function(req, res) {
     })
 })
 
+// auth route uses passport
 app.get('/auth/atlassian-oauth',
     passport.authenticate('atlassian-oauth'),
     function (req, res) {
