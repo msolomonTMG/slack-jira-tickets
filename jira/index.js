@@ -74,7 +74,7 @@ var functions = {
         }
       })
 
-      helpers.makeJiraRequest(user, `${JIRA_URL}rest/api/2/issue/`, 'post', ticketData)
+      helpers.makeJiraRequest(user, `${JIRA_URL}/rest/api/2/issue/`, 'post', ticketData)
         .then(ticket => {
           console.log(JSON.parse(ticket))
           return resolve(JSON.parse(ticket))
