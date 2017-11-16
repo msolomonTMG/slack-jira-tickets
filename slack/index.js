@@ -136,6 +136,10 @@ var functions = {
                 value: "PS"
               },
               {
+                label: "Sales Insights",
+                value: "SI"
+              },
+              {
                 label: "Storytelling",
                 value: "STRY"
               },
