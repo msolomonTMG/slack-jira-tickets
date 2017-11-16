@@ -72,9 +72,15 @@ passport.deserializeUser(function(user, done) {
 });
 
 app.get('/', function(req, res) {
-  res.render('message', {
-    successMsg: 'You can now create tickets with /ticket in Slack!'
-  })
+
+  if (req.query.success) {
+    res.render('message', {
+      successMsg: 'You can now create tickets with /ticket in Slack!'
+    })
+  } else {
+    res.render('home')
+  }
+
 })
 
 app.get('/delete', function(req, res) {
@@ -123,7 +129,7 @@ app.get('/auth/atlassian-oauth/callback',
     function (req, res) {
       console.log("ATLASSIAN AUTH CALLBACK")
       console.log(req.session)
-        res.redirect('/');
+        res.redirect('/?success=true');
     })
 
 app.get('/auth/atlassian-oauth/authorize', function(req, res) {
