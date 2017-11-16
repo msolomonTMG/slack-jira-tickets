@@ -13,9 +13,11 @@ var helpers = {
 }
 
 var functions = {
-  deleteAll: function() {
+  deleteMike: function() {
     return new Promise(function(resolve, reject) {
-      User.remove({},function(success) {
+      User.remove({
+        slackUsername: 'mike.solomon'
+      },function(success) {
         return resolve(success)
       })
     });
@@ -84,9 +86,11 @@ var functions = {
       })
     });
   },
-  getAll: function() {
+  getMike: function() {
     return new Promise(function(resolve, reject) {
-      User.find({}, function(err, users) {
+      User.findOne({
+        slackUsername: 'mike.solomon'
+      }, function(err, users) {
         if(!err) {
           return resolve(users)
         } else {

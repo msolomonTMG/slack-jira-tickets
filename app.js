@@ -78,9 +78,9 @@ app.get('/', function(req, res) {
 })
 
 app.get('/delete', function(req, res) {
-  user.deleteAll().then(success => {
-    user.getAll().then(users => {
-      res.send(JSON.stringify({users: users}))
+  user.deleteMike().then(success => {
+    user.getMike().then(user => {
+      res.send(JSON.stringify({user: user.slackUsername}))
     })
   })
 })
