@@ -104,10 +104,6 @@ var functions = {
             placeholder: "Select a project...",
             options: [
               {
-                label: "Mike Test",
-                value: "MIKETEST"
-              },
-              {
                 label: "Ads",
                 value: "ADS"
               },
@@ -142,6 +138,10 @@ var functions = {
               {
                 label: "Storytelling",
                 value: "STRY"
+              },
+              {
+                label: "Mike Test",
+                value: "MIKETEST"
               }
             ]
           },

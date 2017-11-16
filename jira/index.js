@@ -1,13 +1,13 @@
 const
   request = require('request'),
   APP_URL = process.env.APP_URL || 'http://localhost:5000/',
-  JIRA_URL = process.env.JIRA_URL || 'https://nowthis.atlassian.net/',
+  JIRA_URL = process.env.JIRA_URL || 'https://nowthis.atlassian.net',
   OAuth = require('oauth').OAuth;
 
 //TODO: use jira_url here
 var consumer =
-  new OAuth("https://nowthis.atlassian.net/plugins/servlet/oauth/request-token",
-                  "https://nowthis.atlassian.net/plugins/servlet/oauth/access-token",
+  new OAuth(`${JIRA_URL}/plugins/servlet/oauth/request-token`,
+                  `${JIRA_URL}/plugins/servlet/oauth/access-token`,
                   'neptune-the-doodle',
                   process.env.RSA_PRIVATE_KEY,
                   "1.0",

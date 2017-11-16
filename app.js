@@ -13,6 +13,7 @@ const
   request = require('request'),
   mongoose = require('mongoose'),
   APP_URL = process.env.APP_URL || `http://localhost:5000/`,
+  JIRA_URL = process.env.JIRA_URL,
   MONGO_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/mongo_test";
 
 mongoose.connect(MONGO_URI, function (err, res) {
@@ -39,7 +40,7 @@ app.set('view engine', 'handlebars');
 // passport setup for atlassian
 // called from route: /auth/atlassian-oauth
 passport.use(new AtlassianOAuthStrategy({
-  applicationURL:"https://nowthis.atlassian.net",
+  applicationURL: `${JIRA_URL}`,
   callbackURL:`${APP_URL}auth/atlassian-oauth/callback`,
   passReqToCallback: true,
   consumerKey:"neptune-the-doodle",
