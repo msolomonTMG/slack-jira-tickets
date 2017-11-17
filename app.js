@@ -8,7 +8,6 @@ const
   jira = require('./jira'),
   passport = require('passport'),
   user = require('./user'),
-  seoSlackChannel = process.env.SLACK_CHANNEL_SEO,
   AtlassianOAuthStrategy = require('passport-atlassian-oauth').Strategy,
   request = require('request'),
   mongoose = require('mongoose'),
