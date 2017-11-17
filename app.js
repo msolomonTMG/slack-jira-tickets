@@ -184,9 +184,10 @@ app.post('/', function(req, res) {
                 let jiraURL = issue.self.split('/rest/api')[0];
 
                 slack.sendMessage(payload.channel.id,
-                  `:raised_hands: ${issue.fields.creator.displayName} created *<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>*`,
+                  `:raised_hands: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command!`,
                   [{
                     fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                    title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
                     color: 'good',
                     thumb_url: `${issue.fields.creator.avatarUrls["48x48"]}`,
                     fields: [{
