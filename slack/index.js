@@ -1,6 +1,5 @@
 const
   request = require('request'),
-  config = require('../config'),
   slackOauthToken = process.env.SLACK_OAUTH_TOKEN,
   slackBotToken = process.env.SLACK_BOT_TOKEN;
 
@@ -92,14 +91,6 @@ var functions = {
   },
   openCreateTicketDialog: function(payload) {
     return new Promise(function(resolve, reject) {
-      // strip everything from config except label and value
-      // when used as slack dialog dropdown options
-      let projectOptions = config.map(option => {
-        let formattedOption = {}
-        formattedOption['label'] = option.label
-        formattedOption['value'] = option.value
-        return formattedOption
-      })
 
       let dialog = {
         callback_id: "create-ticket",
@@ -111,7 +102,52 @@ var functions = {
             name: "project",
             type: "select",
             placeholder: "Select a project...",
-            options: projectOptions
+            options: [
+              {
+                label: "Ads",
+                value: "ADS"
+              },
+              {
+                label: "Audience Insights",
+                value: "AI"
+              },
+              {
+                label: "Automated Testing",
+                value: "AT"
+              },
+              {
+                label: "Data Platform",
+                value: "DP"
+              },
+              {
+                label: "Emerging Platforms",
+                value: "EP"
+              },
+              {
+                label: "Operations",
+                value: "GNOPS"
+              },
+              {
+                label: "Platform",
+                value: "PLAT"
+              },
+              {
+                label: "Platform Services",
+                value: "PS"
+              },
+              {
+                label: "Sales Insights",
+                value: "SI"
+              },
+              {
+                label: "Storytelling",
+                value: "STRY"
+              },
+              {
+                label: "Mike Test",
+                value: "MIKETEST"
+              }
+            ]
           },
           {
             label: "Summary",
@@ -124,24 +160,6 @@ var functions = {
             name: "description",
             type: "textarea",
             optional: "true"
-          },
-          {
-            label: "Interruption?",
-            name: "interruption",
-            type: "select",
-            placeholder: "Selecting yes will add the issue to the current sprint...",
-            options: [
-              {
-                label: "No",
-                value: "no"
-              },
-              {
-                label: "Yes",
-                value: "yes"
-              }
-            ],
-            optional: "true",
-            value: "no"
           }
         ]
       }

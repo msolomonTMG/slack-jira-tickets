@@ -8,7 +8,6 @@ const
   jira = require('./jira'),
   passport = require('passport'),
   user = require('./user'),
-  config = require('./config'),
   AtlassianOAuthStrategy = require('passport-atlassian-oauth').Strategy,
   request = require('request'),
   mongoose = require('mongoose'),
@@ -139,7 +138,7 @@ app.get('/auth/atlassian-oauth/authorize', function(req, res) {
 })
 
 app.post('/', function(req, res) {
-  //console.log(req.body)
+  console.log(req.body)
 
   // show tickte dialog
   if (req.body.command && req.body.command == '/ticket') {
@@ -182,61 +181,21 @@ app.post('/', function(req, res) {
               .then(issue => {
 
                 let jiraURL = issue.self.split('/rest/api')[0];
-                console.log("interruption is a " + payload.submission.interruption)
-                // do extra jira things if this is an interruption
-                if (payload.submission.interruption == "yes") {
-                  console.log('here we are')
-                  let projectConfig = config.find(project => project.value == payload.submission.project)
-                  let boardId = projectConfig.boardId
 
-                  jira.getActiveSprint(thisUser, boardId)
-                    .then(activeSprint => {
-
-                      jira.addIssueToActiveSprint(thisUser, issue, activeSprint)
-                        .then(success => {
-
-                          slack.sendMessage(payload.channel.id,
-                            `:bangbang: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command and added the issue to the current sprint!`,
-                            [{
-                              fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
-                              title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
-                              color: 'danger',
-                              thumb_url: `${issue.fields.creator.avatarUrls["48x48"]}`,
-                              fields: [{
-                                title: "Description",
-                                value: `${issue.fields.description}`,
-                                short: false
-                              }]
-                            }]
-                          )
-
-                        })
-                        .catch(err => {
-                          console.log(err)
-                        })
-                    })
-                    .catch(err => {
-                      console.log(err)
-                    })
-
-                } else {
-
-                  slack.sendMessage(payload.channel.id,
-                    `:raised_hands: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command!`,
-                    [{
-                      fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
-                      title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
-                      color: 'good',
-                      thumb_url: `${issue.fields.creator.avatarUrls["48x48"]}`,
-                      fields: [{
-                        title: "Description",
-                        value: `${issue.fields.description}`,
-                        short: false
-                      }]
+                slack.sendMessage(payload.channel.id,
+                  `:raised_hands: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command!`,
+                  [{
+                    fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                    title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                    color: 'good',
+                    thumb_url: `${issue.fields.creator.avatarUrls["48x48"]}`,
+                    fields: [{
+                      title: "Description",
+                      value: `${issue.fields.description}`,
+                      short: false
                     }]
-                  )
-
-                }
+                  }]
+                )
               })
               .catch(err => {
                 console.log(err)
