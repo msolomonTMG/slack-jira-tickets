@@ -164,8 +164,7 @@ app.post('/', function(req, res) {
     // create ticket
   } else if (req.body.payload) {
 
-    let payload = JSON.parse(req.body.payload)
-
+    var payload = JSON.parse(req.body.payload)
     console.log(payload)
 
     if (payload.type == 'dialog_submission') {
