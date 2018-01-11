@@ -8,6 +8,7 @@ const
   jira = require('./jira'),
   passport = require('passport'),
   user = require('./user'),
+  config = require('./config'),
   AtlassianOAuthStrategy = require('passport-atlassian-oauth').Strategy,
   request = require('request'),
   mongoose = require('mongoose'),
