@@ -182,11 +182,10 @@ app.post('/', function(req, res) {
               .then(issue => {
 
                 let jiraURL = issue.self.split('/rest/api')[0];
-                let addedToSprintText = ''
-
+                console.log("interruption is a " + payload.submission.interruption)
                 // do extra jira things if this is an interruption
                 if (payload.submission.interruption == "yes") {
-
+                  console.log('here we are')
                   let projectConfig = config.find(project => project.value == payload.submission.project)
                   let boardId = projectConfig.boardId
 
@@ -196,7 +195,20 @@ app.post('/', function(req, res) {
                       jira.addIssueToActiveSprint(thisUser, issue, activeSprint)
                         .then(success => {
 
-                          addedToSprintText = ' and added the issue to the current sprint'
+                          slack.sendMessage(payload.channel.id,
+                            `:bangbang: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command and added the issue to the current sprint!`,
+                            [{
+                              fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                              title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                              color: 'danger',
+                              thumb_url: `${issue.fields.creator.avatarUrls["48x48"]}`,
+                              fields: [{
+                                title: "Description",
+                                value: `${issue.fields.description}`,
+                                short: false
+                              }]
+                            }]
+                          )
 
                         })
                         .catch(err => {
@@ -207,22 +219,24 @@ app.post('/', function(req, res) {
                       console.log(err)
                     })
 
-                }
+                } else {
 
-                slack.sendMessage(payload.channel.id,
-                  `:raised_hands: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command${addedToSprintText}!`,
-                  [{
-                    fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
-                    title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
-                    color: 'good',
-                    thumb_url: `${issue.fields.creator.avatarUrls["48x48"]}`,
-                    fields: [{
-                      title: "Description",
-                      value: `${issue.fields.description}`,
-                      short: false
+                  slack.sendMessage(payload.channel.id,
+                    `:raised_hands: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command${addedToSprintText}!`,
+                    [{
+                      fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                      title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                      color: 'good',
+                      thumb_url: `${issue.fields.creator.avatarUrls["48x48"]}`,
+                      fields: [{
+                        title: "Description",
+                        value: `${issue.fields.description}`,
+                        short: false
+                      }]
                     }]
-                  }]
-                )
+                  )
+
+                }
               })
               .catch(err => {
                 console.log(err)
