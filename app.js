@@ -166,6 +166,7 @@ app.post('/', function(req, res) {
   } else if (req.body.payload) {
 
     var payload = JSON.parse(req.body.payload)
+    console.log(payload)
 
     if (payload.type == 'dialog_submission') {
       res.setHeader('Content-Type', 'application/json')
