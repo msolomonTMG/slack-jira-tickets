@@ -1,5 +1,6 @@
 const
   request = require('request'),
+  configure = require('../config'),
   slackOauthToken = process.env.SLACK_OAUTH_TOKEN,
   slackBotToken = process.env.SLACK_BOT_TOKEN;
 
@@ -92,6 +93,16 @@ var functions = {
   openCreateTicketDialog: function(payload) {
     return new Promise(function(resolve, reject) {
 
+      let projectOptions = config
+      // strip everything from config except label and value
+      // when used as slack dialog dropdown options
+      projectOptions.forEach(option => {
+        option = {
+          label: option.label,
+          value: option.value
+        }
+      })
+
       let dialog = {
         callback_id: "create-ticket",
         title: "Create a Jira Ticket",
@@ -102,54 +113,7 @@ var functions = {
             name: "project",
             type: "select",
             placeholder: "Select a project...",
-            options: [
-              {
-                label: "Ads",
-                value: "ADS"
-              },
-              {
-                label: "Audience Insights",
-                value: "AI"
-              },
-              {
-                label: "Automated Testing",
-                value: "AT"
-              },
-              {
-                label: "Data Platform",
-                value: "DP"
-              },
-              {
-                label: "Emerging Platforms",
-                value: "EP",
-                board: "108"
-              },
-              {
-                label: "Operations",
-                value: "GNOPS",
-                board: "123"
-              },
-              {
-                label: "Platform",
-                value: "PLAT"
-              },
-              {
-                label: "Platform Services",
-                value: "PS"
-              },
-              {
-                label: "Sales Insights",
-                value: "SI"
-              },
-              {
-                label: "Storytelling",
-                value: "STRY"
-              },
-              {
-                label: "Mike Test",
-                value: "MIKETEST"
-              }
-            ]
+            options: projectOptions
           },
           {
             label: "Summary",
