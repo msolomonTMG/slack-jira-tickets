@@ -92,15 +92,13 @@ var functions = {
   },
   openCreateTicketDialog: function(payload) {
     return new Promise(function(resolve, reject) {
-
-      let projectOptions = config
       // strip everything from config except label and value
       // when used as slack dialog dropdown options
-      projectOptions.forEach(option => {
-        option = {
-          label: option.label,
-          value: option.value
-        }
+      let projectOptions = config.map(option => {
+        let formattedOption = {}
+        formattedOption['label'] = option.label
+        formattedOption['value'] = option.value
+        return formattedOption
       })
 
       let dialog = {
@@ -135,15 +133,15 @@ var functions = {
             options: [
               {
                 label: "No",
-                value: false
+                value: "no"
               },
               {
                 label: "Yes",
-                value: true
+                value: "yes"
               }
             ],
             optional: "true",
-            value: false
+            value: "no"
           }
         ]
       }
