@@ -29,12 +29,6 @@ var helpers = {
         payload,
         'application/json',
         function(error, data, resp) {
-          console.log("---------ERROR---------")
-          console.log(error)
-          console.log("---------DATA---------")
-          console.log(data)
-          console.log("---------RESP---------")
-          console.log(resp)
           return resolve(data)
         })
     });
