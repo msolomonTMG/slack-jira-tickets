@@ -29,6 +29,12 @@ var helpers = {
         payload,
         'application/json',
         function(error, data, resp) {
+          console.log("---------ERROR---------")
+          console.log(error)
+          console.log("---------DATA---------")
+          console.log(data)
+          console.log("---------RESP---------")
+          console.log(resp)
           return resolve(data)
         })
     });
@@ -45,47 +51,6 @@ var functions = {
           console.log('TICKET')
           console.log(ticket)
           return resolve(JSON.parse(ticket))
-        })
-        .catch(err => {
-          return reject(err)
-        })
-
-    });
-  },
-  getActiveSprint: function(user, boardId) {
-    return new Promise(function(resolve, reject) {
-
-      let url = `${JIRA_URL}/rest/agile/1.0/board/${boardId}/sprint`
-
-      helpers.makeJiraRequest(user, url, 'get')
-        .then(sprints => {
-          sprints = JSON.parse(sprints.values)
-
-          sprints.forEach((sprint, index) => {
-
-            if (sprint.state == "active") {
-              return resolve(sprint)
-            } else if (sprint.length = index + 1) {
-              return reject({ error: "no active sprints" })
-            }
-
-          })
-        })
-        .catch(err => {
-          return reject(err)
-        })
-
-    });
-  },
-  addIssueToActiveSprint: function(user, issue, activeSprint) {
-    return new Promise(function(resolve, reject) {
-
-      let url = `${JIRA_URL}/rest/agile/1.0/sprint/${activeSprint.id}/issue`
-      let data = { "issues": [ issue.key ] }
-
-      helpers.makeJiraRequest(user, url, 'post', data)
-        .then(success => {
-          return resolve(success)
         })
         .catch(err => {
           return reject(err)
