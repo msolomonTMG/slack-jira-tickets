@@ -139,7 +139,7 @@ app.get('/auth/atlassian-oauth/authorize', function(req, res) {
 })
 
 app.post('/', function(req, res) {
-  console.log(req.body)
+  //console.log(req.body)
 
   // show tickte dialog
   if (req.body.command && req.body.command == '/ticket') {
