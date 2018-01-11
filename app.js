@@ -185,7 +185,7 @@ app.post('/', function(req, res) {
                 let addedToSprintText = ''
 
                 // do extra jira things if this is an interruption
-                if (payload.submission.interruption) {
+                if (payload.submission.interruption == "yes") {
 
                   let projectConfig = config.find(project => project.value == payload.submission.project)
                   let boardId = projectConfig.boardId
