@@ -8,6 +8,7 @@ const
   jira = require('./jira'),
   passport = require('passport'),
   user = require('./user'),
+  config = require('./config'),
   AtlassianOAuthStrategy = require('passport-atlassian-oauth').Strategy,
   request = require('request'),
   mongoose = require('mongoose'),
@@ -181,9 +182,35 @@ app.post('/', function(req, res) {
               .then(issue => {
 
                 let jiraURL = issue.self.split('/rest/api')[0];
+                let addedToSprintText = ''
+
+                // do extra jira things if this is an interruption
+                if (payload.submission.interruption == "yes") {
+
+                  let projectConfig = config.find(project => project.value == payload.submission.project)
+                  let boardId = projectConfig.boardId
+
+                  jira.getActiveSprint(thisUser, boardId)
+                    .then(activeSprint => {
+
+                      jira.addIssueToActiveSprint(thisUser, issue, activeSprint)
+                        .then(success => {
+
+                          addedToSprintText = ' and added the issue to the current sprint'
+
+                        })
+                        .catch(err => {
+                          console.log(err)
+                        })
+                    })
+                    .catch(err => {
+                      console.log(err)
+                    })
+
+                }
 
                 slack.sendMessage(payload.channel.id,
-                  `:raised_hands: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command!`,
+                  `:raised_hands: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command${addedToSprintText}!`,
                   [{
                     fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
                     title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
