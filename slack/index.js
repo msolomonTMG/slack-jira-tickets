@@ -1,6 +1,6 @@
 const
   request = require('request'),
-  configure = require('../config'),
+  config = require('../config'),
   slackOauthToken = process.env.SLACK_OAUTH_TOKEN,
   slackBotToken = process.env.SLACK_BOT_TOKEN;
 
