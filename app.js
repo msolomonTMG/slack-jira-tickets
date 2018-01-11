@@ -221,7 +221,7 @@ app.post('/', function(req, res) {
                 } else {
 
                   slack.sendMessage(payload.channel.id,
-                    `:raised_hands: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command${addedToSprintText}!`,
+                    `:raised_hands: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command!`,
                     [{
                       fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
                       title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
