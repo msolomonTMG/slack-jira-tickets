@@ -121,11 +121,13 @@ var functions = {
               },
               {
                 label: "Emerging Platforms",
-                value: "EP"
+                value: "EP",
+                board: "108"
               },
               {
                 label: "Operations",
-                value: "GNOPS"
+                value: "GNOPS",
+                board: "123"
               },
               {
                 label: "Platform",
@@ -160,6 +162,24 @@ var functions = {
             name: "description",
             type: "textarea",
             optional: "true"
+          },
+          {
+            label: "Interruption?",
+            name: "interruption",
+            type: "select",
+            placeholder: "Selecting yes will add the issue to the current sprint...",
+            options: [
+              {
+                label: "No",
+                value: false
+              },
+              {
+                label: "Yes",
+                value: true
+              }
+            ],
+            optional: "true",
+            value: false
           }
         ]
       }
