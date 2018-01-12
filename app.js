@@ -192,27 +192,31 @@ app.post('/', function(req, res) {
                   let boardId = selectedProject.boardId
                   console.log(boardId)
 
-                  jira.getActiveSprint(thisUser, boardId)
-                    .then(activeSprint => {
-                      console.log(activeSprint)
-                      jira.addIssueToActiveSprint(thisUser, issue, activeSprint)
-                        .then(success => {
-                          console.log(success)
-                          //send slack
-                          slack.sendMessage(payload.channel.id,
-                            `:bangbang: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command and added it to the current sprint!`,
-                            [{
-                              fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
-                              title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
-                              color: 'good',
-                              thumb_url: `${issue.fields.creator.avatarUrls["48x48"]}`,
-                              fields: [{
-                                title: "Description",
-                                value: `${issue.fields.description}`,
-                                short: false
-                              }]
-                            }]
-                          )
+                  jira.labelIssue(thisUser, issue, 'interruption')
+                    .then(labelled => {
+
+                      jira.getActiveSprint(thisUser, boardId)
+                        .then(activeSprint => {
+                          console.log(activeSprint)
+                          jira.addIssueToActiveSprint(thisUser, issue, activeSprint)
+                            .then(success => {
+                              //send slack
+                              slack.sendMessage(payload.channel.id,
+                                `:bangbang: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command and added it to the current sprint!`,
+                                [{
+                                  fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                                  title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                                  color: 'good',
+                                  thumb_url: `${issue.fields.creator.avatarUrls["48x48"]}`,
+                                  fields: [{
+                                    title: "Description",
+                                    value: `${issue.fields.description}`,
+                                    short: false
+                                  }]
+                                }]
+                              )
+
+                            })
 
                         })
 

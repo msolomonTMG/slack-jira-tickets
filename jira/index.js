@@ -58,6 +58,28 @@ var functions = {
 
     });
   },
+  labelIssue: function(user, issue, label) {
+    return new Promise(function(resolve, reject) {
+      let url = `${JIRA_URL}/rest/api/2/issue/${issue.key}`
+      let data = JSON.stringify({
+        update: {
+          labels: [
+            add: `${label}`
+          ]
+        }
+      })
+
+      helpers.makeJiraRequest(user, url, 'put', data)
+        .then(result => {
+          return resolve(JSON.parse(result))
+        })
+        .catch(err => {
+          console.log('error adding label to jira issue')
+          return reject(err)
+        })
+
+    });
+  },
   getActiveSprint: function(user, boardId) {
     return new Promise(function(resolve, reject) {
       console.log('getting active sprint')
