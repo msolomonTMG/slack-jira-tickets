@@ -65,9 +65,9 @@ var functions = {
 
       helpers.makeJiraRequest(user, url, 'get')
         .then(result => {
+          result = JSON.parse(result)
           console.log("RESULT")
           console.log(result)
-          console.log(JSON.parse(result))
           console.log('sprints are...')
           sprints = result.values
           console.log(sprints)
