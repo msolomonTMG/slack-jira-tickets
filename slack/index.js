@@ -124,25 +124,25 @@ var functions = {
             name: "description",
             type: "textarea",
             optional: "true"
-          }//,
-          // {
-          //   label: "Interruption?",
-          //   name: "interruption",
-          //   type: "select",
-          //   placeholder: "Selecting yes will add the issue to the current sprint...",
-          //   options: [
-          //     {
-          //       label: "No",
-          //       value: "no"
-          //     },
-          //     {
-          //       label: "Yes",
-          //       value: "yes"
-          //     }
-          //   ],
-          //   optional: "true",
-          //   value: "no"
-          // }
+          },
+          {
+            label: "Interruption?",
+            name: "interruption",
+            type: "select",
+            placeholder: "Selecting yes will add the issue to the current sprint...",
+            options: [
+              {
+                label: "No",
+                value: "no"
+              },
+              {
+                label: "Yes",
+                value: "yes"
+              }
+            ],
+            optional: "true",
+            value: "no"
+          }
         ]
       }
 
