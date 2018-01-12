@@ -1,8 +1,7 @@
 
-var config = {
+module.exports = {
   projects: function() {
-    return
-    [
+    return [
       {
         name: "Ads",
         key: "ADS"
@@ -52,5 +51,3 @@ var config = {
     ]
   }
 }
-
-module.exports = config;
