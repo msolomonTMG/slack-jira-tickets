@@ -87,7 +87,7 @@ var functions = {
     return new Promise(function(resolve, reject) {
       console.log('adding to active sprint...')
       let url = `${JIRA_URL}/rest/agile/1.0/sprint/${activeSprint.id}/issue`
-      let data = { "issues": [ issue.key ] }
+      let data = JSON.stringify({ "issues": [ issue.key ] })
 
       helpers.makeJiraRequest(user, url, 'post', data)
         .then(success => {
