@@ -60,11 +60,14 @@ var functions = {
   },
   getActiveSprint: function(user, boardId) {
     return new Promise(function(resolve, reject) {
+      console.log('getting active sprint')
       let url = `${JIRA_URL}/rest/agile/1.0/board/${boardId}/sprint`
 
       helpers.makeJiraRequest(user, url, 'get')
         .then(sprints => {
+          console.log('sprints are...'
           sprints = JSON.parse(sprints.values)
+          console.log(sprints)
           sprints.forEach((sprint, index) => {
             if (sprint.state == "active") {
               return resolve(sprint)
@@ -74,20 +77,26 @@ var functions = {
           })
         })
         .catch(err => {
+          console.log('error getting active sprint')
+          console.log(err)
           return reject(err)
         })
       });
   },
   addIssueToActiveSprint: function(user, issue, activeSprint) {
     return new Promise(function(resolve, reject) {
+      console.log('adding to active sprint...')
       let url = `${JIRA_URL}/rest/agile/1.0/sprint/${activeSprint.id}/issue`
       let data = { "issues": [ issue.key ] }
 
       helpers.makeJiraRequest(user, url, 'post', data)
         .then(success => {
+          console.log('success')
           return resolve(success)
         })
         .catch(err => {
+          console.log('error adding to active sprint')
+          console.log(err)
           return reject(err)
         })
       });
