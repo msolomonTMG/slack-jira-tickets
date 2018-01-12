@@ -55,6 +55,7 @@ passport.use(new AtlassianOAuthStrategy({
       user.create({
         slackUsername: req.session.slackUsername,
         jiraToken: token,
+        jiraUsername: profile.username,
         jiraTokenSecret: tokenSecret
       }).then(createdUser => {
         return done(null, createdUser)
@@ -194,6 +195,8 @@ app.post('/', function(req, res) {
 
                   // this errors out for some reason but still applies label
                   jira.labelIssue(thisUser, issue, 'interruption')
+
+                  jira.assignIssue(thisUser, issue, thisUser.jiraUsername)
 
                   jira.getActiveSprint(thisUser, boardId)
                     .then(activeSprint => {

@@ -80,6 +80,23 @@ var functions = {
 
     });
   },
+  assignIssue: function(user, issue, assignee) {
+    return new Promise(function(resolve, reject) {
+      let url = `${JIRA_URL}/rest/api/2/issue/${issue.key}/assignee`
+      let data = JSON.stringify({
+        name: assignee
+      })
+
+      helpers.makeJiraRequest(user, url, 'put', data)
+        .then(result => {
+          return resolve(result)
+        })
+        .catch(err => {
+          console.log('error assigning issue')
+          return reject(err)
+        })
+    });
+  },
   getActiveSprint: function(user, boardId) {
     return new Promise(function(resolve, reject) {
       console.log('getting active sprint')
