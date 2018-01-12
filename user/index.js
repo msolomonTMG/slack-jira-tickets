@@ -4,7 +4,8 @@ var userSchema = new mongoose.Schema({
   slackUsername: String,
   jiraUsername: String,
   jiraToken: String,
-  jiraTokenSecret: String
+  jiraTokenSecret: String,
+  lastProjectSelected: String
 });
 
 var User = mongoose.model('Users', userSchema);
@@ -91,7 +92,7 @@ var functions = {
   getMike: function() {
     return new Promise(function(resolve, reject) {
       User.findOne({
-        slackUsername: 'mike.solomon'
+        slackUsername: 'mike'
       }, function(err, users) {
         if(!err) {
           return resolve(users)

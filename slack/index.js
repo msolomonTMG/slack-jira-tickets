@@ -90,7 +90,7 @@ var functions = {
 
     })
   },
-  openCreateTicketDialog: function(payload) {
+  openCreateTicketDialog: function(payload, user) {
     return new Promise(function(resolve, reject) {
 
       let projects = config.projects()
@@ -111,7 +111,8 @@ var functions = {
             name: "project",
             type: "select",
             placeholder: "Select a project...",
-            options: projectOptions
+            options: projectOptions,
+            value: user.lastProjectSelected
           },
           {
             label: "Summary",

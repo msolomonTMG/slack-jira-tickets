@@ -84,6 +84,12 @@ app.get('/', function(req, res) {
 
 })
 
+app.get('/mike', function(req, res) {
+  user.getMike().then(mike => {
+    res.send(JSON.stringify({mike: mike}))
+  })
+})
+
 app.get('/delete', function(req, res) {
   user.deleteMike().then(success => {
     user.getMike().then(user => {
@@ -159,7 +165,7 @@ app.post('/', function(req, res) {
           res.setHeader('Content-Type', 'application/json');
           res.status(200).send()
           // this user already authed, show dialog
-          slack.openCreateTicketDialog(req.body)
+          slack.openCreateTicketDialog(req.body, thisUser)
         }
       })
 
@@ -175,6 +181,8 @@ app.post('/', function(req, res) {
       res.status(200).send({})
       console.log(payload)
       user.getBySlackUsername(payload.user.name).then(thisUser => {
+        // update user's last selected project
+        user.update(thisUser._id, { lastProjectSelected: payload.submission.project })
 
         jira.createTicket(thisUser, payload.submission)
           .then(result => {
