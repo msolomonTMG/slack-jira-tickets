@@ -6,6 +6,7 @@ const
   bodyParser = require('body-parser'),
   slack = require('./slack'),
   jira = require('./jira'),
+  config = require('./config'),
   passport = require('passport'),
   user = require('./user'),
   AtlassianOAuthStrategy = require('passport-atlassian-oauth').Strategy,
@@ -182,20 +183,59 @@ app.post('/', function(req, res) {
 
                 let jiraURL = issue.self.split('/rest/api')[0];
 
-                slack.sendMessage(payload.channel.id,
-                  `:raised_hands: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command!`,
-                  [{
-                    fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
-                    title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
-                    color: 'good',
-                    thumb_url: `${issue.fields.creator.avatarUrls["48x48"]}`,
-                    fields: [{
-                      title: "Description",
-                      value: `${issue.fields.description}`,
-                      short: false
+                if (payload.submission.interruption == 'yes') {
+
+                  let projects = config.projects()
+                  let selectedProject = projects.find(project => project.key == payload.submission.project)
+                  console.log("PROJECT IS " + selectedProject.name)
+
+                  let boardId = selectedProject.boardId
+                  console.log(boardId)
+
+                  jira.getActiveSprint(thisUser, boardId)
+                    .then(activeSprint => {
+                      console.log(activeSprint)
+                      jira.addIssueToActiveSprint(thisUser, issue, activeSprint)
+                        .then(success => {
+                          console.log(success)
+                          //send slack
+                          slack.sendMessage(payload.channel.id,
+                            `:bangbang: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command and added it to the current sprint!`,
+                            [{
+                              fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                              title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                              color: 'good',
+                              thumb_url: `${issue.fields.creator.avatarUrls["48x48"]}`,
+                              fields: [{
+                                title: "Description",
+                                value: `${issue.fields.description}`,
+                                short: false
+                              }]
+                            }]
+                          )
+
+                        })
+
+                    })
+
+                } else {
+
+                  slack.sendMessage(payload.channel.id,
+                    `:raised_hands: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command!`,
+                    [{
+                      fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                      title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                      color: 'good',
+                      thumb_url: `${issue.fields.creator.avatarUrls["48x48"]}`,
+                      fields: [{
+                        title: "Description",
+                        value: `${issue.fields.description}`,
+                        short: false
+                      }]
                     }]
-                  }]
-                )
+                  )
+
+                }
               })
               .catch(err => {
                 console.log(err)
