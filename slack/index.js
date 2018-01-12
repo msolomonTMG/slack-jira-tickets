@@ -137,10 +137,10 @@ var functions = {
               {
                 label: "Yes",
                 value: "yes"
-              },
-              optional: "true",
-              value: "no"
-            ]
+              }
+            ],
+            optional: "true",
+            value: "no"
           }
         ]
       }
