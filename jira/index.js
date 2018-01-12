@@ -63,9 +63,9 @@ var functions = {
       let url = `${JIRA_URL}/rest/api/2/issue/${issue.key}`
       let data = JSON.stringify({
         update: {
-          labels: [
+          labels: [{
             add: `${label}`
-          ]
+          }]
         }
       })
 
