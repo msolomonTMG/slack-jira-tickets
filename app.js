@@ -222,6 +222,23 @@ app.post('/', function(req, res) {
                         })
 
                     })
+                    // if no active sprint, create the issue but don't add it
+                    .catch(err => {
+                      slack.sendMessage(payload.channel.id,
+                        `:bangbang: ${issue.fields.creator.displayName} created an issue with the \`/ticket\` command and attempted to add it to a current sprint however the project's board has no sprints active.`,
+                        [{
+                          fallback: `${issue.fields.creator.displayName} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                          title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+                          color: 'warning',
+                          thumb_url: `${issue.fields.creator.avatarUrls["48x48"]}`,
+                          fields: [{
+                            title: "Description",
+                            value: `${issue.fields.description}`,
+                            short: false
+                          }]
+                        }]
+                      )
+                    })
 
                 } else {
 
