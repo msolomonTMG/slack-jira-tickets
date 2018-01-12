@@ -58,25 +58,25 @@ var functions = {
 
     });
   },
-getActiveSprint: function(user, boardId) {
-  return new Promise(function(resolve, reject) {
-    let url = `${JIRA_URL}/rest/agile/1.0/board/${boardId}/sprint`
+  getActiveSprint: function(user, boardId) {
+    return new Promise(function(resolve, reject) {
+      let url = `${JIRA_URL}/rest/agile/1.0/board/${boardId}/sprint`
 
-    helpers.makeJiraRequest(user, url, 'get')
-      .then(sprints => {
-        sprints = JSON.parse(sprints.values)
-        sprints.forEach((sprint, index) => {
-          if (sprint.state == "active") {
-            return resolve(sprint)
-          } else if (sprint.length = index 1) {
-            return reject({ error: "no active sprints" })
-          }
+      helpers.makeJiraRequest(user, url, 'get')
+        .then(sprints => {
+          sprints = JSON.parse(sprints.values)
+          sprints.forEach((sprint, index) => {
+            if (sprint.state == "active") {
+              return resolve(sprint)
+            } else if (sprint.length = index 1) {
+              return reject({ error: "no active sprints" })
+            }
+          })
         })
-      })
-      .catch(err => {
-        return reject(err)
-      })
-    });
+        .catch(err => {
+          return reject(err)
+        })
+      });
   },
   addIssueToActiveSprint: function(user, issue, activeSprint) {
     return new Promise(function(resolve, reject) {
