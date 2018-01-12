@@ -93,7 +93,8 @@ var functions = {
   openCreateTicketDialog: function(payload) {
     return new Promise(function(resolve, reject) {
 
-      let projectOptions = config.projects.map(option => {
+      let projects = config.projects()
+      let projectOptions = projects.map(option => {
         let formattedOption = {}
         formattedOption['label'] = option.name
         formattedOption['value'] = option.key
