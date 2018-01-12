@@ -64,9 +64,9 @@ var functions = {
       let url = `${JIRA_URL}/rest/agile/1.0/board/${boardId}/sprint`
 
       helpers.makeJiraRequest(user, url, 'get')
-        .then(sprints => {
+        .then(result => {
           console.log('sprints are...')
-          sprints = sprints.values
+          sprints = JSON.parse(result.values)
           console.log(sprints)
           sprints.forEach((sprint, index) => {
             if (sprint.state == "active") {
