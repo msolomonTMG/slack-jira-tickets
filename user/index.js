@@ -2,6 +2,7 @@ var mongoose = require('mongoose')
 
 var userSchema = new mongoose.Schema({
   slackUsername: String,
+  jiraUsername: String,
   jiraToken: String,
   jiraTokenSecret: String
 });
@@ -34,6 +35,7 @@ var functions = {
       } else {
         newUser = new User ({
           slackUsername: userObj.slackUsername,
+          jiraUsername: userObj.jiraUsername,
           jiraToken: userObj.jiraToken,
           jiraTokenSecret: userObj.jiraTokenSecret
         });
