@@ -109,7 +109,7 @@ var functions = {
           sprints.forEach((sprint, index) => {
             if (sprint.state == "active") {
               return resolve(sprint)
-            } else if (sprint.length = index + 1) {
+            } else if (sprint.length == index + 1) {
               return reject({ error: "no active sprints" })
             }
           })
