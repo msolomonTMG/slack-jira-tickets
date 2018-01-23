@@ -105,7 +105,7 @@ var functions = {
       helpers.makeJiraRequest(user, url, 'get')
         .then(result => {
           result = JSON.parse(result)
-          sprints = result.values
+          let sprints = result.values
           sprints.forEach((sprint, index) => {
             if (sprint.state == "active") {
               return resolve(sprint)
