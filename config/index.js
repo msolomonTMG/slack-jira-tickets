@@ -13,6 +13,11 @@ module.exports = {
         boardId: "125"
       },
       {
+        name: "Consumer Experience",
+        key: "CE",
+        boardId: "165"
+      },
+      {
         name: "Data Platform",
         key: "DP",
         boardId: "127"
@@ -23,14 +28,14 @@ module.exports = {
         boardId: "108"
       },
       {
+        name: "Media Management and Distribution",
+        key: "MMD",
+        boardId: "166"
+      },
+      {
         name: "Operations",
         key: "GNOPS",
         boardId: "123"
-      },
-      {
-        name: "Platform",
-        key: "PLAT",
-        boardId: "110"
       },
       {
         name: "Platform Services",
@@ -41,11 +46,6 @@ module.exports = {
         name: "Sales Insights",
         key: "SI",
         boardId: "126"
-      },
-      {
-        name: "Storytelling",
-        key: "STRY",
-        boardId: "130"
       },
       {
         name: "Mike Test",
