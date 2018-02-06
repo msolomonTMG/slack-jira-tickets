@@ -13,6 +13,11 @@ module.exports = {
         boardId: "125"
       },
       {
+        name: "Automated Testing",
+        key: "AT",
+        boardId: "113"
+      },
+      {
         name: "Consumer Experience",
         key: "CE",
         boardId: "165"
