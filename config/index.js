@@ -28,6 +28,11 @@ module.exports = {
         boardId: "127"
       },
       {
+        name: "Data Platform USA",
+        key: "DPU",
+        boardId: "174"
+      },
+      {
         name: "Emerging Platforms",
         key: "EP",
         boardId: "108"
